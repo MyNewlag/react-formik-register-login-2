@@ -13,36 +13,23 @@ const initialValues={
     first_name:"",
     last_name:"",
     email:"",
-    auth_mode:"mobile",
-    date:'',
-    // image:"",
-    phone:"",
+    mobile:"",
     password:"",
-    c_password:""
+    c_password:"",
+    auth_mode:"mobile",
+    date:''
+
 }
 
 
 
 export default function Register() {
 
+
     const onSubmit=(values)=>{  
         console.log(values);
         console.log("A");
-       
-        // axios.post('http://ecomadminapi.azhadev.ir/api/auth/register' ,values)
-        // .then(res=>{
-        //     console.log(res.data);
-        //     localStorage.setItem("token" ,res.data.token )
-        // })
-
-      
-        // let formData=new FormData();
-        // formData.append('user_name',values.user_name)
-        // formData.append('mobile',values.mobile)
-        // formData.append('password',values.password)
-        // formData.append('image',values.image )
-       
-        //     axios.post('url',formData)
+        alert("asma")
     
     }
 
@@ -50,38 +37,34 @@ export default function Register() {
 
 
     const validationSchema=yup.object({
-        user_name:yup.string().matches(/^[0-9a-zA-Z]+$/ ,'اسم مستعار را پر کنید'),
-        first_name:yup.string().matches(/^[@-_.: آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی\s0-9a-zA-Z]+$/ ,'اسم را پر کنید'),
-        last_name:yup.string().matches(/^[@-_.: آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی\s0-9a-zA-Z]+$/ ,'اسم فامیلی را پر کنید'),
-        // email:yup.string().when('auth_mode' ,{
-        //     is:"email" ,
-        //     then : yup.string().required('ایمیل رو وارد کنید')
-        //     .email("وژدانا قالب ایمیل را رعایت کنید مثال")
-        // }),
-        // phone:yup.number().when('auth_mode',{
-        //     is:"mobile" ,
-        //     then : yup.number().required('شماره موبایل رو وارد کنید')
-        // }) ,
+        user_name:yup.string().matches(/^[0-9a-zA-Z]+$/ ,'از اعداد و حروف انگلیسی کوچک و بزرگ استفاده کنید'),
+        first_name:yup.string().matches(/^[@-_.: آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی\s0-9a-zA-Z]+$/ ,'از حروف فارسی و حروف انگلیسی کوچک و بزرگ و اعداد و کاراکترهای مجاز استفاده کنید'),
+        last_name:yup.string().matches(/^[@-_.: آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی\s0-9a-zA-Z]+$/ ,'از حروف فارسی و حروف انگلیسی کوچک و بزرگ و اعداد و کاراکترهای مجاز استفاده کنید'),
 
-        email:yup.string().required('وژدانا این قسمت را پر کنید').email("وژدانا قالب ایمیل را رعایت کنید مثال"),
-        phone:yup.number().required('شماره موبایل را وارد کنید'),
+
+        mobile:yup.number().when('auth_mode' ,{
+            is: "mobile" ,
+            then:()=> yup.number().required('لطفا موبایل را وارد کنید')
+        }),
+
+        email:yup.string().when('auth_mode' ,{
+            is:"email",
+            then:()=> yup.string().required('وژدانا این قسمت را پر کنید').email("وژدانا قالب ایمیل را رعایت کنید مثال")
+        }),
      
         password: yup
                  .string()
                  .required('تن خدا این قسمت را پر کنید')
                  .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/ , 
                      'حداقل یک حرف بزرگ و یک حرف کوچک لاتین و اعداد و کارکترهای خاص استفاده کنید'),
-             c_password: yup
+      c_password: yup
                  .string()
                 .oneOf([yup.ref('password'),''] ,'با رمز عبور مطابقت ندارد')
                 .required('این قسمت رو پر کن'),
+    
+      date:yup.string().required('تاریخ باید پر شود')
 
-         date:yup.string().required('تاریخ رو حتما پرش من'),   
-        //  image:yup.mixed().required('این قسمت را پر کن').test("fileSize" , "حجم فایل بیشتر از 100 کیلو بایت مجاز نیست",
-        //     value=>value && value.size<(500*1024)
-        // )
-        // .test("format" , "،فرمت باید png باشد" ,   value=>value && value.type==="image/jpeg")
-                     
+        
     })
 
  
@@ -92,14 +75,6 @@ export default function Register() {
     ]
 
 
-    const handleGetInfo=()=>{
-        axios.get('http://ecomadminapi.azhadev.ir/api/auth/user',{
-            headers:{
-                'Authorization' : `Bearer ${localStorage.getItem("token")}`
-            }
-        }).then(res=>{console.log(res)}
-        )
-    }
 
   return (
         <div className="limiter">
@@ -109,7 +84,7 @@ export default function Register() {
                 >
                        {
                         formik=>{
-                            // console.log(formik);
+                            console.log(formik);
                             return(
                                 <div className="wrap-login100">
                                 <Form className="login100-form validate-form pos-relative d-flex flex-column align-items-center justify-content-center">
@@ -126,39 +101,63 @@ export default function Register() {
                                      name='user_name'
                                      type='text'
                                      icon='fa fa-user'
-                                     lable='نام  کاربری'
+                                     label='نام  کاربری'
                                      />
 
-                                     
-                                     <FormikControl
+                                   <FormikControl
                                      formik={formik}
                                      control='input'
                                      name='first_name'
                                      type='text'
                                      icon='fa fa-user'
-                                     lable='نام'
+                                     label='نام'
                                      />
 
-                                    
-                                     
-                                     <FormikControl
+
+
+                                   <FormikControl
                                      formik={formik}
                                      control='input'
                                      name='last_name'
                                      type='text'
-                                     icon='fa fa-envelope'
-                                     lable='نام خانوائگی'
+                                     icon='fa fa-user'
+                                     label='نام خانوادگی'
                                      />
 
-                                                                        
+
+                                    <FormikControl
+                                     formik={formik}
+                                     control='radio'
+                                     name='auth_mode'
+                                     label=' نوع اعتبار سنجی :'
+                                     options={authModeValues}
+                                     />
+
+
+                                    {formik.values.auth_mode=="mobile" ?  (
                                     <FormikControl
                                     formik={formik}
                                     control="input"
                                     type="number"
-                                    name="phone"
+                                    name="mobile"
                                     icon="fa fa-mobile"
-                                    lable="شماره تلفن همراه"
+                                    label="شماره  موبایل"
                                     /> 
+                                    ):(
+                                   <FormikControl
+                                    formik={formik}
+                                    control='input'
+                                    name='email'
+                                    type='email'
+                                    icon='fa fa-envelope'
+                                    label='ایمیل'
+                                    />
+                                    )
+
+                                    }
+
+                            
+                                                                       
             
                                      <FormikControl
                                      formik={formik}
@@ -166,70 +165,31 @@ export default function Register() {
                                      name='password'
                                      type='password'
                                      icon='fa fa-lock'
-                                     lable=' پسورد'
+                                     label=' پسورد'
                                      />
 
-
-                                     <FormikControl
+                                    <FormikControl
                                      formik={formik}
                                      control='input'
                                       name='c_password'
                                      type='password'
                                      icon='fa fa-lock'
-                                     lable=' تایید پسورد'
+                                     label=' تایید پسورد'
                                      />
+                                  
 
                                     <FormikControl
                                      formik={formik}
-                                     options={authModeValues}
-                                     control='radio'
-                                     name='auth_mode'
-                                     lable=' نوع اعتبار سنجی'
+                                     control='date'
+                                     name='date'
+                                     icon='fa fa-calendar'
+                                     label='تاریخ تولد'
                                      />
+                                  
 
 
-                                    {
-                                    formik.values.auth_mode=="mobile" ?(
-                                        <FormikControl
-                                        formik={formik}
-                                        control='input'
-                                        name='phone'
-                                        type='number'
-                                        icon='fa fa-phone'
-                                        lable=' موبایل'
-                                        />
-                                    ):(
-                                        <FormikControl
-                                        formik={formik}
-                                        control='input'
-                                        name='email'
-                                        type='email'
-                                        icon='fa fa-envelope'
-                                        lable=' ایمیل'
-                                        />
-                                    )
-                                    }
-
-                                     <FormikControl
-                                        formik={formik}
-                                        control='date'
-                                        name='date'
-                                        icon='fa fa-calendar'
-                                        lable='تاریخ تولد'
-                                     />
 
 
-                                     {/* <FormikControl
-                                        formik={formik}
-                                        control='file'
-                                        name='image'
-                                        icon='fa fa-file'
-                                        lable='تصویر کاربر'
-                                     /> */}
-
-                                   
-
-                                    
                                         <div className="container-login100-form-btn">
                                             <button className="login100-form-btn">
                                                 ثبت نام
@@ -237,7 +197,7 @@ export default function Register() {
                                         </div>
                                     
                                         <div className="w-100 text-center">
-                                            <button className="btn btn-info" onClick={handleGetInfo}>
+                                            <button className="btn btn-info">
                                         دریافت اطلاعات کاربر                                           
                                         </button>
                                         </div>
