@@ -65,7 +65,7 @@ const handleSetInputDate=(e)=>{
      <div className={`wrap-input100 validate-input ${formik.errors[name] && formik.touched[name]  ? 'alert-validate': null}`} 
         data-validate={formik.errors[name]}>
 
-             <input type='text' className='input100 input-fate' placeholder={label} 
+             <input type='text' className='input100 input-date' placeholder={label} 
             onClick={handleShowDataConfig}>  
             </input>
             <FastField className='input100' type='text'  name={name}

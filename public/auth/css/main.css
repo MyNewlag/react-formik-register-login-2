@@ -471,7 +471,7 @@ iframe {
   cursor: pointer !important;
 } 
 
-.input-file{
+.input_file{
   position: absolute;
   height: 49px;
   width: 100%;
@@ -485,7 +485,7 @@ iframe {
 
 
 
-.input-fate{
+.input-date{
   width: 100%;
   height: 50px;
   padding-right: 0px;

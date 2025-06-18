@@ -17,7 +17,8 @@ const initialValues={
     password:"",
     c_password:"",
     auth_mode:"mobile",
-    date:''
+    date:'',
+    image:null
 
 }
 
@@ -28,9 +29,22 @@ export default function Register() {
 
     const onSubmit=(values)=>{  
         console.log(values);
-        console.log("A");
-        alert("asma")
-    
+
+        let formData= new FormData();
+
+        formData.append('user_name' , values.user_name)
+        formData.append('first_name)' , values.first_name)
+        formData.append('last_name' , values.last_name)
+        formData.append('email' , values.email)
+        formData.append('mobile' , values.mobile)
+        formData.append('password' , values.password)
+        formData.append('c_password' , values.c_password)
+        formData.append('date' , values.date)
+        formData.append('image' , values.image)
+
+        axios.post('URL' , formData , {
+            Headers:{'Content-type' : 'multipart/form-data'}
+        })
     }
 
 
@@ -62,7 +76,11 @@ export default function Register() {
                 .oneOf([yup.ref('password'),''] ,'با رمز عبور مطابقت ندارد')
                 .required('این قسمت رو پر کن'),
     
-      date:yup.string().required('تاریخ باید پر شود')
+      date:yup.string().required('تاریخ باید پر شود'),
+      
+      image:yup.mixed().required('لطفا قایل را آپلود کنید').test("fileSize", "حجم فایل نباید بیشتر از 100 کیلو بایت باشد",
+        (value)=>value && value.size <=(100*1024))
+        .test("format" ,"فرمت فایل باید jpg باشد" , (value)=>value && value.type==="image/png")
 
         
     })
@@ -184,6 +202,14 @@ export default function Register() {
                                      name='date'
                                      icon='fa fa-calendar'
                                      label='تاریخ تولد'
+                                     />
+                                  
+                                    <FormikControl
+                                     formik={formik}
+                                     control='file'
+                                     name='image'
+                                     icon='fa fa-file'
+                                     label='تصویر کاربر '
                                      />
                                   
 
