@@ -28,7 +28,6 @@ export default function Register() {
 
 
     const onSubmit=(values)=>{  
-        console.log(values);
 
         let formData= new FormData();
 
@@ -80,7 +79,7 @@ export default function Register() {
       
       image:yup.mixed().required('لطفا قایل را آپلود کنید').test("fileSize", "حجم فایل نباید بیشتر از 100 کیلو بایت باشد",
         (value)=>value && value.size <=(100*1024))
-        .test("format" ,"فرمت فایل باید jpg باشد" , (value)=>value && value.type==="image/png")
+        .test("format" ,"فرمت فایل باید jpg باشد" , (value)=>value && value.type==="image/jpg")
 
         
     })
@@ -98,11 +97,13 @@ export default function Register() {
         <div className="limiter">
             <div className="container-login100">
                 <Formik
-                initialValues={initialValues} onSubmit={onSubmit}validationSchema={validationSchema}
+                initialValues={initialValues} 
+                onSubmit={onSubmit}
+                validationSchema={validationSchema}
                 >
                        {
                         formik=>{
-                            console.log(formik);
+                            // console.log(formik);
                             return(
                                 <div className="wrap-login100">
                                 <Form className="login100-form validate-form pos-relative d-flex flex-column align-items-center justify-content-center">

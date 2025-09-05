@@ -32,13 +32,13 @@ const [years,setYears]=useState([])
 
 const [showConfig,setShowConfig]=useState(false)
 
-const handleShowDataConfig=()=>{
 
+const handleShowDataConfig=()=>{
     let arr=[]
-    for (let index = parseInt(year)-100; index < parseInt(year); index++) {
+    for (let index = parseInt(year)-100; index <= parseInt(year); index++) {
         arr=[...arr ,index]
     }
-    setYears(arr)
+    setYears(arr.reverse())
     setShowConfig(true)
 }
 
@@ -51,22 +51,20 @@ const handleSetInputDate=(e)=>{
 }
 
 
-
     useEffect(()=>{
         let now=jMoment()
         setDay(now.jDate())
-        setMonth(months[(now.jMonth())].id)
-        // setMonth(months[(now.jMonth())].value)
+        // setMonth(months[(now.jMonth())].id)
+        setMonth((now.jMonth())+1)
         setYear(now.jYear())   
     },[])
-    
 
   return (
      <div className={`wrap-input100 validate-input ${formik.errors[name] && formik.touched[name]  ? 'alert-validate': null}`} 
         data-validate={formik.errors[name]}>
 
              <input type='text' className='input100 input-date' placeholder={label} 
-            onClick={handleShowDataConfig}>  
+             onClick={handleShowDataConfig}>  
             </input>
             <FastField className='input100' type='text'  name={name}
              placeholder={label} disabled/>
@@ -74,6 +72,7 @@ const handleSetInputDate=(e)=>{
             {
                 showConfig ?(
             <div className='datePicker row w-100 m-0 p-0'>
+
                     <div className='col-3 d-flex justify-content-center align-items-center p-0'>
                         <select className='form-select' value={day} onChange={(e)=>setDay(e.target.value)}>
                             {days.map(d=>(
@@ -92,7 +91,7 @@ const handleSetInputDate=(e)=>{
                     </div>
                     
                     <div className='col-3 d-flex justify-content-center align-items-center p-0'>
-                        <select className='form-select' value={year} onChange={(e)=>setYear(e.target.value)}>
+                        <select className='form-select' value={year+100} onChange={(e)=>setYear(e.target.value)}>
                             {years.map((y,i)=>(
                             <option key={i} value={y}>{y}</option>
                             ))}
